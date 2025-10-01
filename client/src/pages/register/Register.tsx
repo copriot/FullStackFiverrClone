@@ -2,16 +2,19 @@ import React, { useState, type FormEvent } from "react";
 import Input from "../../components/form/Input";
 import Toggle from "../../components/form/Toggle";
 import { Link } from "react-router-dom";
+import { useRegister } from "../../service/auth";
+import type { IRegisterData } from "../../types";
 
 const Register = () => {
   const [isChecked, setIsChecked] = useState<boolean>(false);
-
+  const { mutate, isPending } = useRegister();
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const userData = Object.fromEntries(formData.entries());
-    const newUser = { ...userData, isSeller: isChecked };
-    console.log(newUser);
+    const userData = Object.fromEntries(formData.entries()) as unknown as IRegisterData;
+
+    userData.isSeller = isChecked;
+    mutate(userData);
   };
 
   return (
@@ -37,7 +40,9 @@ const Register = () => {
             disabled={!isChecked}
             required={!isChecked}
           />
-          <button className="form-button">Register</button>
+          <button disabled={isPending} className="form-button">
+            Register
+          </button>
           <p className="mt-5 text-gray-500">
             Do you have any account ?
             <Link to="/login" className="ms-3 text-blue-500">
