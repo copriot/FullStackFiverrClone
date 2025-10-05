@@ -1,3 +1,4 @@
+import type { AxiosError } from "axios";
 import type { JSX } from "react";
 
 interface ILoginData {
@@ -9,8 +10,9 @@ interface IRegisterData {
   username: string;
   email: string;
   profilePicture: File;
+  country: string;
   password: string;
-  isSeller?: boolean;
+  isSeller: boolean;
   phone?: string;
   description?: string;
 }
@@ -21,6 +23,8 @@ interface IUser {
   country: string;
   profilePicture: string;
   isSeller: boolean;
+  description?: string;
+  phone?: string;
   createdAt: string;
   updatedAt: string;
   id: string;
@@ -44,9 +48,72 @@ interface IInput {
   name: string;
   required?: boolean;
   type?: string;
+  multiple?: boolean;
   min?: number;
   max?: number;
-  multiple?: boolean;
 }
 
-export type { ILoginData, IRegisterData, IUser, AuthResponse, ICategory, IInfo, IInput };
+// Gig Verileri İçin
+interface IGig<T> {
+  _id: string;
+  user: T;
+  title: string;
+  description: string;
+  reviewCount: number;
+  starCount: number;
+  category: string;
+  coverImage: string;
+  images: string[];
+  package_title: string;
+  package_description: string;
+  package_price: number;
+  package_features: string[];
+  package_duration: number;
+  package_revisions: number;
+  createdAt: string;
+  updatedAt: number;
+  __v: 0;
+}
+
+interface ShortUser {
+  username: string;
+  profilePicture: string;
+  id: string;
+}
+
+interface GetAllGigsResponse {
+  message: string;
+  results: number;
+  gigs: IGig<ShortUser>[];
+}
+interface GetOneGigResponse {
+  message: string;
+  gig: IGig<IUser>;
+}
+
+interface GigFormData {}
+
+interface GetAllGigsParams {
+  category?: string | null;
+  search?: string | null;
+  userId?: string;
+}
+
+interface Err extends AxiosError<{ message: string }> {}
+
+export type {
+  ILoginData,
+  IRegisterData,
+  IUser,
+  AuthResponse,
+  ICategory,
+  IInfo,
+  IInput,
+  IGig,
+  ShortUser,
+  GetAllGigsResponse,
+  GetOneGigResponse,
+  GetAllGigsParams,
+  GigFormData,
+  Err,
+};

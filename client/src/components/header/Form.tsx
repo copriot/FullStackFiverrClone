@@ -1,4 +1,4 @@
-import React, { type FormEvent } from "react";
+import { type FormEvent } from "react";
 import { IoMdSearch } from "react-icons/io";
 import { useNavigate, useSearchParams } from "react-router-dom";
 const Form = () => {
@@ -7,8 +7,8 @@ const Form = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     const text = e.currentTarget.search.value;
-    navigate(`/search?query=${text}`);
-    console.log(text);
+    if (!text.trim()) return; // ✅ boşsa hiçbir şey yapma
+    navigate(`/search?query=${encodeURIComponent(text.trim())}`); // ✅ URL güvenliği için encode et
   };
 
   return (

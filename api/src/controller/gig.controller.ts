@@ -12,9 +12,11 @@ const buildFilters = (query: Query): Filters => {
   if (query.category) filters.category = query.category;
   if (query.userId) filters.user = query.userId;
 
-  filters.package_price = {};
-  if (query.min) filters.package_price.$gte = query.min;
-  if (query.max) filters.package_price.$lte = query.max;
+  if (query.min || query.max) {
+    filters.package_price = {};
+    if (query.min) filters.package_price.$gte = query.min;
+    if (query.max) filters.package_price.$lte = query.max;
+  }
 
   if (query.search) filters.title = { $regex: query.search, $options: "i" };
   return filters;
@@ -24,22 +26,16 @@ export const getAllGigs = c(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const filters = buildFilters(req.query);
 
-    if (req.query.username) {
-      const user = User.findOne({ username: req.query.username });
-      if (!user) "error";
-      filters.user = user._id;
-    }
-
     const gigs = await Gig.find(filters).populate("user", "username profilePicture");
 
-    if (gigs.length === 0) return next(e(404, "Searched gigs could not find"));
+    if (gigs.length === 0)
+      return next(e(404, "Aranılan kriterlere uygun hizmet bulunamadı"));
 
     res.status(200).json({
-      message: "Gigs data taken",
+      message: "Hizmet verileri alındı",
       results: gigs.length,
       gigs,
     });
-    next(e(400, "Error detail information"));
   }
 );
 
@@ -80,7 +76,7 @@ export const createGig = c(
 
     res.status(200).json({
       message: "Gig data occured",
-      body: savedGig,
+      gig: savedGig,
       files: { coverImage, images },
     });
   }
