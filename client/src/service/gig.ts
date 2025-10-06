@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 export const gigService = {
   getAll: (params: GetAllParams) => api.get<GetAllGigsResponse>("/gigs", { params }),
   getOne: (id: string) => api.get<GetOneGigResponse>(`/gigs/${id}`),
-  create: (body: GigFormData) => api.post<GetOneGigResponse>(`/gigs/`, body),
+  create: (body: FormData) => api.post<GetOneGigResponse>(`/gigs/`, body),
   delete: (id: string) => api.delete<GetOneGigResponse>(`/gigs/${id}`),
 };
 
@@ -34,13 +34,14 @@ export const useCreateGig = () => {
   const navigate = useNavigate();
   return useMutation({
     mutationKey: ["create-gig"],
-    mutationFn: gigService.create,
+    mutationFn: (body: FormData) => gigService.create(body),
     onSuccess: (res) => {
       navigate(`/detail/${res.data.gig._id}`);
       toast.success("Gig created successfully");
     },
-    onError: () => {
-      toast.error("Gig creation failed");
+    onError: (error) => {
+      toast.error("Gig creation failed", error.message);
+      console.log(error);
     },
   });
 };

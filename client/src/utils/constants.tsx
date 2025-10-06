@@ -43,66 +43,32 @@ export const items: IInfo[] = [
 ];
 
 export const inputs: IInput[] = [
-  {
-    label: "Title",
-    name: "title",
-    required: true,
-  },
-  {
-    label: "Cover Image",
-    name: "coverImage",
-    required: true,
-    type: "file",
-  },
-  {
-    label: "Images",
-    name: "images",
-    required: true,
-    type: "file",
-    multiple: true,
-  },
+  { label: "Title", name: "title", required: true },
+  { label: "Cover Image", name: "coverImage", required: true, type: "file" },
+  { label: "Images", name: "images", required: true, type: "file", multiple: true },
   {
     label: "Number of Revisions",
-    name: "packageRevisions",
+    name: "package_revisions",
     required: true,
     type: "number",
     min: 1,
   },
   {
     label: "Features (separate with ',')",
-    name: "packageFeatures",
+    name: "package_features",
     required: true,
     type: "textarea",
   },
-  {
-    label: "Description",
-    name: "description",
-    required: true,
-    type: "textarea",
-  },
-  {
-    label: "Package Description",
-    name: "packageDescription",
-    required: true,
-  },
-  {
-    label: "Package Title",
-    name: "packageTitle",
-    required: true,
-  },
+  { label: "Description", name: "description", required: true, type: "textarea" },
+  { label: "Package Description", name: "package_description", required: true },
+  { label: "Package Title", name: "package_title", required: true },
   {
     label: "Delivery Time (days)",
-    name: "packageDuration",
+    name: "package_duration",
     required: true,
     type: "number",
     min: 1,
     max: 90,
   },
-  {
-    label: "Price ($)",
-    name: "packagePrice",
-    type: "number",
-    required: true,
-    min: 1,
-  },
+  { label: "Price ($)", name: "package_price", type: "number", required: true, min: 1 },
 ];
